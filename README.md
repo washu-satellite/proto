@@ -1,18 +1,6 @@
-# <Name of Module>
+# WashU Satellite Internal Proto Schema
 
-Description of Module
-
-### Point of Contact
-The current POC for this module is Nathaniel Hayman
+This is the comprehensive Protobuf schema for all *internal* communications across all WashU satellite projects
 
 ## Documentation
-For detailed documentation see: [Module Documentation](https://washusatellite.com)
-
-## Usage
-Initialize the program like so:
-```
-some command sequence
-```
-
-## Interface
-Describe the interfacing considerations for this module. If specifying a REST API, refer the reader to an OpenAPI definition (or AsyncAPI depending on the application)
+For detailed documentation see: [`ws-buf/internal` Docs](https://buf.build/ws-buf/internal/docs/main)

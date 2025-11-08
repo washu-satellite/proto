@@ -1,0 +1,13 @@
+syntax = "proto3";
+package common.telemetry.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Telemetry beacon envelope, containing a mission-specific beacon body
+message TelemetryBeacon {
+  google.protobuf.Timestamp timestamp = 1;
+  uint32 entity_id = 2;
+  uint32 seq_num = 3;
+  uint32 version = 4;
+  bytes beacon_body = 5;
+}

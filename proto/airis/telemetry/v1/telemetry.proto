@@ -1,0 +1,73 @@
+syntax = "proto3";
+package airis.telemetry.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Telemetry beacon body for the AIRIS mission
+message Beacon {
+  // Operational mode of the AIRIS mission
+  enum OpsMode {
+    OPS_MODE_IDLE_UNSPECIFIED = 0;
+    OPS_MODE_SAFE = 1;
+    OPS_MODE_EXPERIMENT_BURST = 2;
+    OPS_MODE_EXPERIMENT_OTHER = 3;
+    OPS_MODE_CALIBRATION = 4;
+  }
+
+  // Top-level health report
+  enum HealthStatus {
+    HEALTH_STATUS_NOMINAL_UNSPECIFIED = 0;
+    HEALTH_STATUS_DEGRADED = 1;
+    HEALTH_STATUS_CRITICAL = 2;
+  }
+
+  // ADCS mode of AIRIS
+  enum ControlMode {
+    CONTROL_MODE_ACTIVE_ROT_UNSPECIFIED = 0; // actively rotating towards new target
+    CONTROL_MODE_STEADY = 1; // steady state pointing at current pointing vector
+    CONTROL_MODE_IDLE = 2; // control system is inactive
+  }
+
+  // Communications mode of AIRIS
+  enum CommsMode {
+    COMMS_MODE_FULL_UNSPECIFIED = 0; // full comms available: images, estimations, telemetry, and C&C
+    COMMS_MODE_BEACON = 1; // limited comms: periodic estimations, telemetry, and limited C&C
+    COMMS_MODE_OFF = 2; // ADAPT has notified of full comms termination
+  }
+
+  // MOPS
+  OpsMode mode = 1;
+  HealthStatus health = 2;
+
+  // Power
+  float bat_voltage = 3;
+  float bat_current = 4;
+  float solar_current = 5;
+
+  // Thermals
+  float obc_temp = 6; // flight computer temp
+  float bat_temp = 7; // battery temp
+
+  // ADCS
+  ControlMode control_mode = 8; // active ADCS mode
+  bool sun_sensor_online = 9; // can determine detailed status with a report packet
+  bool gnss_online = 10; // ^
+  bool encoder_a_online = 11; // ^
+  bool encoder_b_online = 12; // ^
+  float az_value = 13;
+  float el_value = 14;
+  float pos_lat = 15;
+  float pos_lon = 16;
+  float pos_hmsl = 17; // HMSL: height mean above sea level (from GNSS)
+
+  // Comms
+  CommsMode comms_mode = 18; // active comms mode
+  uint32 avg_xfer_rate = 19; // average comms transfer rate in bytes/s
+  uint32 beacon_interval = 20; // interval between telemetry beacons
+  google.protobuf.Timestamp last_uplink = 21; // timestamp of last received uplink command
+
+  // Compute statistics
+  uint32 obc_uptime = 22; // time since last OBC reboot
+  uint32 reboot_ctr = 23; // number of reboots since launch
+  uint64 mem_usage = 24; // RAM consumption
+}
