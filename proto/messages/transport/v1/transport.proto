@@ -10,7 +10,6 @@ import "airis/telemetry/v1/telemetry.proto";
 
 // Server response to node creation to establish PUB/SUB link with client
 message EstablishClient {
-  string assigned_id = 1;
 }
 
 // Wrapper for all packet types transferred across WashU Satellite projects
@@ -22,5 +21,6 @@ message MessageEnvelope {
   // define all possible message bodies
   oneof message_body {
     airis.telemetry.v1.Beacon airis_beacon = 10;
+    EstablishClient establish_client = 11;
   }
 }
