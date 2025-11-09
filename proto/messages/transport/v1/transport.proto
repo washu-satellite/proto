@@ -10,6 +10,7 @@ import "airis/telemetry/v1/telemetry.proto";
 
 // Server response to node creation to establish PUB/SUB link with client
 message EstablishClient {
+    string msg = 1;
 }
 
 // Wrapper for all packet types transferred across WashU Satellite projects
