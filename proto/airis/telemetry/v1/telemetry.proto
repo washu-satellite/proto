@@ -71,3 +71,46 @@ message Beacon {
   uint32 reboot_ctr = 23; // number of reboots since launch
   uint64 mem_usage = 24; // RAM consumption
 }
+
+// Likely Point
+message GCNAlert {
+  uint64 burst_id = 1; // matches GCN trigger number scale (9+ digits)
+  google.protobuf.Timestamp alert_time = 2;
+  
+  // Burst location
+  float ra = 3; // right ascension
+  float dec = 4; // declination
+  float probability_score = 5; // confidence level
+
+  float estimated_fluence = 6; // total energy of the burst
+  float spectral_index = 7; // "color" or hardness
+
+}
+
+// Probability Density Function (PDF)
+message LocalizationUpdate {
+  uint32 burst_id = 1;
+  
+  bytes healpix_grid = 2; 
+  
+  uint32 iteration = 3; // progressive healpix localizations
+}
+
+// GPS data
+message NavigationUpdate {
+  google.protobuf.Timestamp timestamp = 1;
+  
+  // From ADAPT Sun Sensor
+  float sun_azimuth = 2;
+  float sun_elevation = 3;
+  
+  // From ADAPT Differential GPS
+  double latitude = 4;
+  double longitude = 5;
+  float altitude = 6;
+  
+  // Velocity for doppler/timing corrections
+  float velocity_n = 7;
+  float velocity_e = 8;
+  float velocity_d = 9;
+}
