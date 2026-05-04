@@ -96,21 +96,55 @@ message LocalizationUpdate {
   uint32 iteration = 3; // progressive healpix localizations
 }
 
-// GPS data
-message NavigationUpdate {
+// Image downlink from AIRIS camera
+message ImageData {
   google.protobuf.Timestamp timestamp = 1;
-  
+  uint64 burst_id = 2;     // associated GRB burst; 0 if not a burst observation
+  uint32 sequence_num = 3; // ordering for multi-image sequences
+  bytes image_data = 4;
+}
+
+// Event notification from controls
+message EventNotification {
+  enum EventType {
+    EVENT_UNKNOWN_UNSPECIFIED = 0;
+    EVENT_STARTUP = 1;       // controls have powered on and initialized
+    EVENT_SAFE_MODE_ENTER = 2; // controls have entered safe mode
+    EVENT_ERROR = 3;         // an error has occurred; see detail field
+  }
+  EventType event_type = 1;
+  google.protobuf.Timestamp timestamp = 2;
+  string detail = 3; // error description for EVENT_ERROR; empty otherwise
+}
+
+// Navigation and state data from ADAPT
+message NavigationUpdate {
+  enum FlightPhase {
+    FLIGHT_PHASE_UNKNOWN_UNSPECIFIED = 0;
+    FLIGHT_PHASE_ASCENT = 1;
+    FLIGHT_PHASE_FLOAT = 2;
+    FLIGHT_PHASE_DESCENT = 3;
+  }
+
+  google.protobuf.Timestamp timestamp = 1;
+
   // From ADAPT Sun Sensor
   float sun_azimuth = 2;
   float sun_elevation = 3;
-  
+
   // From ADAPT Differential GPS
   double latitude = 4;
   double longitude = 5;
   float altitude = 6;
-  
+
   // Velocity for doppler/timing corrections
   float velocity_n = 7;
   float velocity_e = 8;
   float velocity_d = 9;
+
+  // ADAPT computed pointing suggestion
+  float pointing_azimuth = 10;
+  float pointing_elevation = 11;
+
+  FlightPhase flight_phase = 12;
 }

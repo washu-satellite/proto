@@ -18,6 +18,17 @@ message Message {
   string message = 2;
 }
 
+// Command direction of Airis motors
+message PointingCommand {
+    float target_azimuth = 1;
+    float target_elevation = 2;
+}
+
+// Command AIRIS to exit safe mode
+message SafeModeExitCommand {
+    bool force = 1;
+}
+
 // Wrapper for all packet types transferred across WashU Satellite projects
 message MessageEnvelope {
   // routing information
@@ -29,5 +40,12 @@ message MessageEnvelope {
     airis.telemetry.v1.Beacon airis_beacon = 10;
     EstablishClient internal_establish_client = 11;
     Message internal_message = 12;
+    airis.telemetry.v1.GCNAlert gcn_alert = 13;
+    airis.telemetry.v1.LocalizationUpdate localization_update = 14;
+    PointingCommand pointing_cmd = 15;
+    SafeModeExitCommand safe_mode_exit_cmd = 16;
+    airis.telemetry.v1.NavigationUpdate navigation_update = 17;
+    airis.telemetry.v1.EventNotification event_notification = 18;
+    airis.telemetry.v1.ImageData image_data = 19;
   }
 }
