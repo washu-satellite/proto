@@ -26,7 +26,17 @@ message PointingCommand {
 
 // Command AIRIS to exit safe mode
 message SafeModeExitCommand {
-    bool force = 1;
+    bool force = 1; // if true, bypasses health checks (use with caution)
+}
+
+// Directive from ADAPT to change the comms downlink mode
+message CommsDirective {
+    enum Mode {
+        MODE_FULL_UNSPECIFIED = 0; // normal operation — all downlink enabled
+        MODE_SLOW = 1; // suspend image/large file transfers only
+        MODE_STOP = 2; // suspend all ground downlink
+    }
+    Mode mode = 1;
 }
 
 // Wrapper for all packet types transferred across WashU Satellite projects
@@ -47,5 +57,6 @@ message MessageEnvelope {
     airis.telemetry.v1.NavigationUpdate navigation_update = 17;
     airis.telemetry.v1.EventNotification event_notification = 18;
     airis.telemetry.v1.ImageData image_data = 19;
+    CommsDirective comms_directive = 20;
   }
 }
