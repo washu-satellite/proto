@@ -96,36 +96,8 @@ message LocalizationUpdate {
   uint32 iteration = 3; // progressive healpix localizations
 }
 
-// Image downlink from AIRIS camera
-message ImageData {
-  google.protobuf.Timestamp timestamp = 1;
-  uint64 burst_id = 2;     // associated GRB burst; 0 if not a burst observation
-  uint32 sequence_num = 3; // ordering for multi-image sequences
-  bytes image_data = 4;
-}
-
-// Event notification from controls
-message EventNotification {
-  enum EventType {
-    EVENT_UNKNOWN_UNSPECIFIED = 0;
-    EVENT_STARTUP = 1;       // controls have powered on and initialized
-    EVENT_SAFE_MODE_ENTER = 2; // controls have entered safe mode
-    EVENT_ERROR = 3;         // an error has occurred; see detail field
-  }
-  EventType event_type = 1;
-  google.protobuf.Timestamp timestamp = 2;
-  string detail = 3; // error description for EVENT_ERROR; empty otherwise
-}
-
-// Navigation and state data from ADAPT
+// GPS data
 message NavigationUpdate {
-  enum FlightPhase {
-    FLIGHT_PHASE_UNKNOWN_UNSPECIFIED = 0;
-    FLIGHT_PHASE_ASCENT = 1;
-    FLIGHT_PHASE_FLOAT = 2;
-    FLIGHT_PHASE_DESCENT = 3;
-  }
-
   google.protobuf.Timestamp timestamp = 1;
 
   // From ADAPT Sun Sensor
@@ -142,9 +114,32 @@ message NavigationUpdate {
   float velocity_e = 8;
   float velocity_d = 9;
 
-  // ADAPT computed pointing suggestion
-  float pointing_azimuth = 10;
-  float pointing_elevation = 11;
+  enum FlightPhase {
+    FLIGHT_PHASE_UNSPECIFIED = 0;
+    FLIGHT_PHASE_FLOAT = 1;
+    FLIGHT_PHASE_ASCENT = 2;
+    FLIGHT_PHASE_DESCENT = 3;
+  }
+  FlightPhase flight_phase = 10;
+  float pointing_azimuth = 11;
+  float pointing_elevation = 12;
+}
 
-  FlightPhase flight_phase = 12;
+message EventNotification {
+  enum EventType {
+    EVENT_UNSPECIFIED = 0;
+    EVENT_STARTUP = 1;
+    EVENT_SAFE_MODE_ENTER = 2;
+    EVENT_ERROR = 3;
+  }
+  google.protobuf.Timestamp timestamp = 1;
+  EventType event_type = 2;
+  string detail = 3;
+}
+
+message ImgData {
+  google.protobuf.Timestamp timestamp = 1;
+  uint32 sequence_num = 2;
+  uint64 burst_id = 3;
+  bytes image_data = 4;
 }
