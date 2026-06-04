@@ -142,4 +142,11 @@ message ImgData {
   uint32 sequence_num = 2;
   uint64 burst_id = 3;
   bytes image_data = 4;
+
+  // Chunk metadata for images that must be split across multiple UDP packets.
+  // When chunk_count is 0 or 1, image_data is the full payload.
+  // When chunk_count > 1, image_data contains one chunk and chunk_index is 0-based.
+  uint32 chunk_index = 5;
+  uint32 chunk_count = 6;
+  uint32 total_size = 7;
 }
